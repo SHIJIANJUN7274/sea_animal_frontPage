@@ -1,0 +1,13 @@
+{ "data": [
+
+{ "bookName": "废材少年", "author":"土豆少年","ranking":12 ,"read":40003,"dec":"热销榜"},
+
+{ "bookName": "天才少年", "author":"江豆少年","ranking":14 ,"read":20003,"dec":"热销榜"},
+
+{ "bookName": "我不是霸道总裁", "author":"我不是萝莉" ,"ranking":17,"read":10003,"dec":"热销榜"},
+
+{ "bookName": "魔法城市", "author":"魔法小子" ,"ranking":16,"read":11000,"dec":"热销榜"},
+
+{ "bookName": "传奇", "author":"传奇小子" ,"ranking":20,"read":9999,"dec":"热销榜"}
+
+]}

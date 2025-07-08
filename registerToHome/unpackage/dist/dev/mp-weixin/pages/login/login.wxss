@@ -1,0 +1,94 @@
+
+.content.data-v-e4e4508d {
+		height: 100vh;
+		background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202005%2F10%2F20200510005139_JR8fL.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1714820289&t=e835cde99a094cbd98f9c318f25160ec") no-repeat;
+		background-size: 100% 100%;
+}
+.loginBox.data-v-e4e4508d {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -60%);
+		width: 90%;
+		background-color: #fff;
+		border-radius: 20rpx;
+		padding: 60rpx;
+		box-sizing: border-box;
+}
+h3.data-v-e4e4508d {
+		color: rgb(247, 120, 172);
+		font-size: 40rpx;
+		letter-spacing: 10rpx;
+		margin-bottom: 40rpx;
+}
+.inputBox.data-v-e4e4508d {}
+.ipt.data-v-e4e4508d {
+		height: 86rpx;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		margin-bottom: 20rpx;
+		background-color: #f5f5f5;
+		border-radius: 10rpx;
+		padding-left: 10rpx;
+}
+.ipt input.data-v-e4e4508d {
+		margin-left: 20rpx;
+		font-size: 28rpx;
+}
+.ipt input.data-v-e4e4508d {
+		margin-left: 20rpx;
+}
+.forgetPwd.data-v-e4e4508d {
+		font-size: 26rpx;
+		color: #b5b5b5;
+		text-align: end;
+		padding: 0 10rpx;
+		display: flex;
+		justify-content: space-between;
+}
+button.data-v-e4e4508d {
+		margin-top: 20rpx;
+		line-height: 85rpx;
+		text-align: center;
+		background: linear-gradient(to right, rgb(255, 170, 127), rgb(247, 120, 172));
+		border-radius: 40rpx;
+		color: #fff;
+		margin-top: 40rpx;
+}
+.tip.data-v-e4e4508d {
+		text-align: center;
+		font-size: 28rpx;
+		position: fixed;
+		bottom: 50rpx;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #f4f4f4;
+}
+.tipbox.data-v-e4e4508d {
+		text-align: center;
+		margin-top: 100rpx;
+}
+.otherUser.data-v-e4e4508d {
+		margin-top: 30rpx;
+		display: flex;
+		justify-content: center;
+}
+.txt.data-v-e4e4508d {
+		font-size: 28rpx;
+		color: #cbcbcb;
+}
+.otherUser .uni-icons.data-v-e4e4508d {
+		margin-left: 20rpx;
+}
+.yzm.data-v-e4e4508d {
+		text-align: end;
+		font-size: 24rpx;
+		background: linear-gradient(to right, rgb(66, 157, 250), rgb(0, 170, 127));
+		height: 60rpx;
+		width: 150rpx;
+		line-height: 60rpx;
+		text-align: center;
+		border-radius: 10rpx;
+		color: #fff;
+}

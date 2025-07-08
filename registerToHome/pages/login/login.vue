@@ -1,0 +1,246 @@
+<template>
+	<view class="content">
+		<view class="loginBox">
+			<!-- <h3>登录</h3> -->
+			<h3 style="text-align: center;margin-bottom:60rpx;">欢迎登录</h3>
+			<view class="inputBox">
+				<view class="ipt">
+					<uni-icons type="contact" size="24" color="rgb(247,120,172)"></uni-icons>
+					<input type="text"  v-model="user.username" placeholder="请输入账号" />
+				</view>
+				<view class="ipt">
+					<uni-icons type="eye" size="24" color="rgb(247,120,172)"></uni-icons>
+					<input type="password"  v-model="user.password" placeholder="请输入密码" />
+				</view>
+				<view class="forgetPwd">
+					<span>忘记密码</span>
+					<span @click="toRegister">没有账号，去注册</span>
+				</view>
+				<button @click="login">登录</button>
+			</view>
+			<view class="tipbox">
+				<view class="txt">
+					—— 其他账号登录 ——
+				</view>
+				<view class="otherUser">
+					<uni-icons type="qq" size="40" color="rgb(66,157,250)"></uni-icons>
+					<uni-icons type="weixin" size="40" color="rgb(2,187,17)"></uni-icons>
+				</view>
+			</view>
+		</view>
+
+		<view class="tip">
+			某某应用 2024
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+				user: {
+					username: "",
+					password: "",
+					repeatPassword: "",
+				}
+			}
+		},
+		onLoad() {
+
+		},
+		methods: {
+			login() {
+				if (this.user.username !== "" && this.user.password !== "") {
+					uni.request({
+						url: 'http://localhost:8080/wxUser/login',
+						method: 'POST',
+						header: {
+							'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+						},
+						data: {
+							username: this.user.username,
+							password: this.user.password
+						},
+						success: res => {
+							if (res.data.code == 200) {
+								uni.showToast({
+									icon: "success",
+									title: res.data.message
+								});
+								uni.setStorageSync("data", res.data.data);
+								// this.toIndex();
+								this.getToken()
+							} else {
+								uni.showToast({
+									icon: "none",
+									title: res.data.message
+								});
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.showToast({
+						icon: "none",
+						title: "用户名密码不为空"
+					});
+				}
+			},
+			getToken() {
+				uni.request({
+					url:'http://localhost:8080/wxUser/getToken',
+					method:'POST',
+					header: {
+						'content-type' : 'application/x-www-form-urlencoded;charset=utf-8',
+					},
+					data: {
+						username: this.user.username,
+					},
+					success: res => {
+						console.log(res.data);
+						if (res.data.code === 200) {
+							uni.setStorageSync("data",res.data.data);
+							this.toIndex();
+						}else {
+							uni.showToast({
+								icon:"error",
+								title: "获取token失败",
+							});
+						}
+					},
+					fail: () => {},
+					complete:() => {}
+				});
+			},
+			toIndex() {
+				uni.reLaunch({
+					url: '/pages/index/index',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			toRegister() {
+				uni.navigateTo({
+					url: '/pages/register/register',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.content {
+		height: 100vh;
+		background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202005%2F10%2F20200510005139_JR8fL.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1714820289&t=e835cde99a094cbd98f9c318f25160ec") no-repeat;
+		background-size: 100% 100%;
+	}
+
+	.loginBox {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -60%);
+		width: 90%;
+		background-color: #fff;
+		border-radius: 20rpx;
+		padding: 60rpx;
+		box-sizing: border-box;
+	}
+
+	h3 {
+		color: rgb(247, 120, 172);
+		font-size: 40rpx;
+		letter-spacing: 10rpx;
+		margin-bottom: 40rpx;
+	}
+
+	.inputBox {}
+
+	.ipt {
+		height: 86rpx;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		margin-bottom: 20rpx;
+		background-color: #f5f5f5;
+		border-radius: 10rpx;
+		padding-left: 10rpx;
+	}
+
+	.ipt input {
+		margin-left: 20rpx;
+		font-size: 28rpx;
+	}
+
+	.ipt input {
+		margin-left: 20rpx;
+	}
+
+	.forgetPwd {
+		font-size: 26rpx;
+		color: #b5b5b5;
+		text-align: end;
+		padding: 0 10rpx;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	button {
+		margin-top: 20rpx;
+		line-height: 85rpx;
+		text-align: center;
+		background: linear-gradient(to right, rgb(255, 170, 127), rgb(247, 120, 172));
+		border-radius: 40rpx;
+		color: #fff;
+		margin-top: 40rpx;
+	}
+
+	.tip {
+		text-align: center;
+		font-size: 28rpx;
+		position: fixed;
+		bottom: 50rpx;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #f4f4f4;
+	}
+
+	.tipbox {
+		text-align: center;
+		margin-top: 100rpx;
+	}
+
+	.otherUser {
+		margin-top: 30rpx;
+		display: flex;
+		justify-content: center;
+	}
+
+	.txt {
+		font-size: 28rpx;
+		color: #cbcbcb;
+	}
+
+	.otherUser .uni-icons {
+		margin-left: 20rpx;
+	}
+
+	.yzm {
+		text-align: end;
+		font-size: 24rpx;
+		background: linear-gradient(to right, rgb(66, 157, 250), rgb(0, 170, 127));
+		height: 60rpx;
+		width: 150rpx;
+		line-height: 60rpx;
+		text-align: center;
+		border-radius: 10rpx;
+		color: #fff;
+	}
+</style>
