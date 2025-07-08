@@ -50,7 +50,7 @@
 					return;
 				}
 				uni.request({
-					url: 'http://localhost:8080/goods/findCategoryList',
+					url: 'http://159.75.174.133:8080/goods/findCategoryList',
 					method: 'GET',
 					data: {},
 					header: {
@@ -88,7 +88,7 @@
 				
 				this.chooseCategory = category;
 				uni.request({
-					url: 'http://localhost:8080/goods/findByCategory',
+					url: 'http://159.75.174.133:8080/goods/findByCategory',
 					method: 'GET',
 					data: {
 						category: category,

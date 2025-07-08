@@ -62,7 +62,7 @@
 				}
 				
 				uni.request({
-					url: 'http://localhost:8080/wxUser/findUserInfo',
+					url: 'http://159.75.174.133:8080/wxUser/findUserInfo',
 					method: 'GET',
 					header: {
 						'Authorization': token
@@ -93,7 +93,7 @@
 				if (!token) return;
 				
 				uni.request({
-					url: 'http://localhost:8080/wxUser/checkTokenStatus',
+					url: 'http://159.75.174.133:8080/wxUser/checkTokenStatus',
 					method: 'GET',
 					header: {
 						'Authorization': token

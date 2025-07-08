@@ -37,7 +37,8 @@
 		</view> -->
 
 		<uni-load-more :status="status" :icon-size="16" :content-text="contentText">
-		</uni-load-more>
+		</uni-load-more>
+
 
 
 
@@ -112,7 +113,7 @@
 					return;
 				}
 				uni.request({
-					url: 'http://localhost:8080/banner/findbanner',
+					url: 'http://159.75.174.133:8080/banner/findbanner',
 					method: 'GET',
 					data: {},
 					header: {
@@ -154,7 +155,7 @@
 				}
 
 				uni.request({
-					url: "http://localhost:8080/goods/getPageByGoods",
+					url: "http://159.75.174.133:8080/goods/getPageByGoods",
 					method: "GET",
 					data: {
 						currentPage: this.currentPage,

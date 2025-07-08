@@ -89,7 +89,7 @@
 				}
 				this.status = 'contentrefresh';
 				uni.request({
-					url: "http://localhost:8080/goods/getPageQueryByGoods",
+					url: "http://159.75.174.133:8080/goods/getPageQueryByGoods",
 					method: "GET",
 					data: {
 						searchKey: this.searchKey,

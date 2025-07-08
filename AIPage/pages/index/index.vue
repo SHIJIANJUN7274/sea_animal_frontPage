@@ -48,7 +48,7 @@
 				this.userMessage = ""
 				// 发起网络请求
 				uni.request({
-					url: 'http://localhost:8080/ai/chat',
+					url: 'http://159.75.174.133:8080/ai/chat',
 					method: 'GET',
 					data: {
 						message:message

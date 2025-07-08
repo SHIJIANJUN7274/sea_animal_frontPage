@@ -16,7 +16,7 @@ const _sfc_main = {
     login() {
       if (this.user.username !== "" && this.user.password !== "") {
         common_vendor.index.request({
-          url: "http://localhost:8080/wxUser/login",
+          url: "http://159.75.174.133:8080/wxUser/login",
           method: "POST",
           header: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8"

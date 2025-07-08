@@ -44,7 +44,7 @@ message.text }}</text>
 				this.userMessage = '';
 				// 调用后端接口获取 DeepSeek 的回答
 				uni.request({
-					url: 'http://localhost:8080/ai/chat',
+					url: 'http://159.75.174.133:8080/ai/chat',
 					method: 'GET',
 					data: {
 						message: message

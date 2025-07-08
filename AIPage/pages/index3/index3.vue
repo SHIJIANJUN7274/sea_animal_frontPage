@@ -85,7 +85,7 @@
 
 					// 确保 chatId 在请求中传递
 					const response = await fetch(
-						`http://localhost:8080/chatAi/chat3?prompt=${encodeURIComponent(userMessage)}&chatId=${this.chatId}`, {
+						`http://159.75.174.133:8080/chatAi/chat3?prompt=${encodeURIComponent(userMessage)}&chatId=${this.chatId}`, {
 							signal: this.controller.signal
 						})
 

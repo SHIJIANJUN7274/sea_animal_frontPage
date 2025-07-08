@@ -63,7 +63,7 @@
 				if (this.username !== "" && this.password !== "") {
 					if (this.password === this.repeatPassword) {
 						uni.request({
-							url: 'http://localhost:8080/wxUser/register',
+							url: 'http://159.75.174.133:8080/wxUser/register',
 							method: 'POST',
 							header: {
 								'content-type': 'application/x-www-form-urlencoded;charset=utf-8',

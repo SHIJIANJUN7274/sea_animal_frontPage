@@ -54,7 +54,7 @@
 			login() {
 				if (this.user.username !== "" && this.user.password !== "") {
 					uni.request({
-						url: 'http://localhost:8080/wxUser/login',
+						url: 'http://159.75.174.133:8080/wxUser/login',
 						method: 'POST',
 						header: {
 							'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -91,7 +91,7 @@
 			},
 			getToken() {
 				uni.request({
-					url:'http://localhost:8080/wxUser/getToken',
+					url:'http://159.75.174.133:8080/wxUser/getToken',
 					method:'POST',
 					header: {
 						'content-type' : 'application/x-www-form-urlencoded;charset=utf-8',

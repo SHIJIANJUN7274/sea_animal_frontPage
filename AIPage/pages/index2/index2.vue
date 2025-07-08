@@ -72,7 +72,7 @@
 					this.controller = new AbortController()
 
 					const response = await fetch(
-						`http://localhost:8080/aichat/chat2?message=${encodeURIComponent(userMessage)}`, {
+						`http://159.75.174.133:8080/aichat/chat2?message=${encodeURIComponent(userMessage)}`, {
 							signal: this.controller.signal
 						})
 
