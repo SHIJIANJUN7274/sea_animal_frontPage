@@ -1,0 +1,130 @@
+	/* 	uni-app 规定屏幕基准宽度750upx。
+	注意：响应式单位upx和rpx是动态宽度单位。
+	官方收到很多开发小程序的用户投诉upx不能像rpx那样直接支持动态绑定，还得再使用uni.upx2px方
+	法。官方反思了策略，既然微信不可能支持upx的动态绑定，不如我们在App端和H5端来支持rpx的动态绑定。
+	这样rpx就可以全端通用，且支持动态绑定，不再需要uni.upx2px方法。
+	官方推荐使用rpx替代upx
+	uni-app 使用 upx 作为默认尺寸单位， upx 是相对于基准宽度的单位，可以根据屏幕宽度进行自适应。
+	rpx是一种根据屏幕宽度自适应的动态单位。以750宽的屏幕为基准，750rpx正好是屏幕的宽度。
+	动态绑定时，upx不能像rpx那样直接支持动态绑定，还得再使用uni.upx2px方法用来动态计算。 */
+
+	/*
+		纵向  宽度写不写都行   不写默认就是和 父容器同宽  手机屏幕  多宽就多宽 （和100%一样）
+		margin  外边距   组件（标签）和组件之间的距离  组件和父容器之前的距离
+		padding 内边距   组件（标签）内部 的文字（内容） 到组件四条边框的距离
+		单位：rpx动态的，官方推荐使用       空间单位（组件的宽高） 文字的单位 
+*/
+
+	.pic {
+		/* width: 100%; */
+		width: 750upx;
+	}
+
+
+	/*
+	 display: flex; 和 flex-direction: row; 是用来设置 Flex 容器的样式属性。
+	 display: flex; 将一个元素设置为 Flex 容器，启用了 Flex 布局模式。这样的话，该容器内的子元素就可以使用 Flex 属性来进行布局控制。	 
+	 flex-direction: row; 规定了 Flex 容器的主轴方向为水平方向（从左到右）。也就是说，Flex 容器内的子元素会水平排列。让子元素横向排列。
+	 flex-direction: column; 规定了 Flex 容器的主轴方向为垂直方向（从上到下）。这意味着容器内的子元素会垂直排列。让子元素纵向排列。
+	 */
+	.pic2 {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.a1 {
+		width: 50rpx;
+		height: 50rpx;
+		margin-top: 15rpx;
+		margin-left: 10rpx;
+	}
+
+	.a2 {
+		font-size: 20px;
+		font-weight: bold;
+		margin-top: 15rpx;
+		margin-left: 20rpx;
+	}
+
+	/* 
+	pic2 {
+		white-space: nowrap;
+	}
+
+	.a1 {
+		width: 50rpx;
+		height: 50rpx;
+		margin-top: 15rpx;
+		margin-left: 10rpx;
+		display: inline-block;
+	}
+
+	.a2 {
+		font-size: 20px;
+		font-weight: bold;
+		margin-top: 15rpx;
+		margin-left: 20rpx;
+		display: inline-block;
+	} */
+
+
+
+	.b1 {
+		white-space: nowrap;
+	}
+
+	.b2 {
+
+		/* 	display: flex;
+	flex-direction: column; */
+		display: inline-block;
+
+	}
+
+	.b3 {
+		width: 240rpx;
+		height: 300rpx;
+		margin-left: 20rpx;
+	}
+
+	.b4 {
+		padding: 10px;
+		font-size: 15px;
+		margin-left: 20rpx;
+	}
+
+
+	.d1 {
+		/* 控制整体的样式  */
+		display: flex;
+		flex-direction: row;
+		color: #8F8F94;
+		font-size: 10px;
+	}
+
+	.d2 {
+		width: 120upx;
+		height: 120upx;
+		padding: 15upx;
+	}
+
+	.d3 {
+		margin-top: 30upx;
+		font-size: 30rpx;
+		margin-left: 20rpx;
+	}
+
+	.d4 {
+		margin-top: 20upx;
+		margin-left: 20rpx;
+	}
+
+	.d5 {
+		margin-top: 35upx;
+		margin-left: 50upx;
+	}
+
+	.d6 {
+		margin-top: 27upx;
+		margin-left: 50upx;
+	}
