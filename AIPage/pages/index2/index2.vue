@@ -4,14 +4,14 @@
 		<scroll-view class="chat-box" scroll-y :scroll-top="scrollTop" :scroll-with-animation="true">
 			<block v-for="(item, index) in messages" :key="index">
 				<!-- 用户消息 -->
-				<view class="user-msg" v-if="item.role === 'user'">
+				<view class="msg_user" v-if="item.role === 'user'">
 					<view class="msg-bubble right">
 						{{ item.content }}
 					</view>
 				</view>
 
-				<!-- AI消息 -->
-				<view class="ai-msg" v-else>
+				
+				<view class="msg_assistant" v-else>
 					<view class="msg-bubble left">
 						<text>{{ item.content }}</text>
 						<view class="loading" v-if="item.loading">
@@ -43,7 +43,6 @@
 				inputText: '', // 输入内容
 				isLoading: false, // 加载状态
 				scrollTop: 0, // 滚动位置
-				controller: null // 请求控制器（用于中断请求）
 			}
 		},
 		methods: {
@@ -67,45 +66,34 @@
 					loading: true
 				})
 
-				try {
-					this.isLoading = true
-					this.controller = new AbortController()
-
-					const response = await fetch(
-						`http://159.75.174.133:8080/aichat/chat2?message=${encodeURIComponent(userMessage)}`, {
-							signal: this.controller.signal
-						})
-
-					const reader = response.body.getReader()
-					const decoder = new TextDecoder('utf-8')
-
-					// 流式读取
-					while (true) {
-						const { done, value } = await reader.read()
-						if (done) break
-
-						const chunk = decoder.decode(value)
-						aiMessage.content += chunk
-						aiMessage.loading = false
+				this.isLoading = true
+					
+				uni.request({
+					url: 'http://159.75.174.133:8080/ai/ask', // 请求地址（必须）
+					method: 'POST', // 请求方法，默认 GET
+					data: this.messages,
+					success: (res) => {	
+						const lastMsg = this.messages[this.messages.length-1]
+						lastMsg.content = res.data.data
+						lastMsg.loading = false
+					},
+					fail: (err) => {
+					  uni.showToast({
+						  title:"网络错误"
+					  })
+					},
+					complete: () => {
+						this.isLoading = false
 						this.forceUpdateScroll()
 					}
-				} catch (error) {
-					if (error.name !== 'AbortError') {
-						aiMessage.content = '请求失败，请重试'
-						this.showToast('请求失败')
-					}
-				} finally {
-					this.isLoading = false
-					aiMessage.loading = false
-					this.controller = null
-				}
+				});
+					
 			},
 
 			// 添加消息
 			addMessage(message) {
 				this.messages.push({
 					...message,
-					timestamp: Date.now()
 				})
 				this.forceUpdateScroll()
 				return this.messages[this.messages.length - 1]
@@ -144,36 +132,48 @@
 
 <style lang="scss">
 	.container {
-		height: 100vh;
+		height: 85vh;
 		display: flex;
 		flex-direction: column;
 		background: #f5f5f5;
 	}
+	.msg_assistant {
+		width: 100%;
+		display: flex;
+	}
+	
+	.msg_user {
+		width: 100%;
+		display: flex;
+		flex-direction: row-reverse;
+	}
 
 	.chat-box {
 		flex: 1;
+		width: 100%;
 		padding: 20rpx;
 		overflow: auto;
+		 box-sizing: border-box; 
 	}
 
 	.msg-bubble {
 		max-width: 70%;
 		padding: 20rpx;
-		margin: 20rpx;
+		margin-top: 20rpx;
+		margin-bottom: 20rpx;
 		border-radius: 10rpx;
 		font-size: 28rpx;
 		line-height: 1.5;
 
 		&.left {
 			background: #fff;
-			float: left;
 			border: 1rpx solid #eee;
 		}
 
 		&.right {
+			flex-direction: row-reverse;
 			background: #4CAF50;
 			color: white;
-			float: right;
 		}
 	}
 

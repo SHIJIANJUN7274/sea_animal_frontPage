@@ -4,7 +4,7 @@
 		"path" : "pages/index2/index2",
 		"style" : 
 		{
-			"navigationBarTitleText" : ""
+			"navigationBarTitleText" : "通义千问聊天2"
 		}
 	},
 	{
@@ -14,20 +14,19 @@
 			"navigationBarTitleText" : ""
 		}
 	},
+	{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "通义千问聊天1"	
+		}			
+	},		
+	{
+		"path" : "pages/index3/index3",
+		"style" : 
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		
-		{
-			"path" : "pages/index3/index3",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
-			}
-		}
+			"navigationBarTitleText" : "通义千问聊天3"	
+		}			
+	}			
 		
 	],
 	"globalStyle": {

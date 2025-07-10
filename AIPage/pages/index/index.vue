@@ -1,20 +1,37 @@
 <template>
 	<view class="container">
-		<view class="chat-box">
-			<scroll-view scroll-y class="messages" :style="'height:' + height + 'px'">
-				<view v-for="(message, index) in messages" :key="index" class="message" :class="message.type">
-					<text :class="message.isAi ? 'ai-message' : 'user-message'">{{ message.text }}</text>
+		<!-- 聊天消息区域 -->
+		<scroll-view class="chat-box" scroll-y :scroll-top="scrollTop" :scroll-with-animation="true">
+			<block v-for="(item, index) in messages" :key="index">
+				<!-- 用户消息 -->
+				<view class="msg_user" v-if="item.role === 'user'">
+					<view class="msg-bubble right">
+						{{ item.content }}
+					</view>
 				</view>
-			</scroll-view>
-		</view>
+
+				
+				<view class="msg_assistant" v-else>
+					<view class="msg-bubble left">
+						<text>{{ item.content }}</text>
+						<view class="loading" v-if="item.loading">
+							<text class="dot">.</text>
+							<text class="dot">.</text>
+							<text class="dot">.</text>
+						</view>
+					</view>
+				</view>
+			</block>
+		</scroll-view>
+
+		<!-- 输入区域 -->
 		<view class="input-box">
-			<!-- 按下回车键时触发 sendMessage 方法 -->
-			<!-- 获取数据 方式1：v-model="userMessage"   userMessage="你是谁"变量存储用户输入的信息（问的问题  输入的提示词）
-			方式2：event.target.value 方式3：name=username"" -->
-			<input v-model="userMessage" placeholder="请输入你的问题" class="input" @keydown.enter="sendMessage" />
-			<button @click="sendMessage" class="send-button">发送</button>
+			<input class="input" v-model="inputText" placeholder="请输入您的问题" :disabled="isLoading" @confirm="sendMessage"
+				confirm-type="send" />
+			<button class="send-btn" :class="{ disabled: isLoading }" @click="sendMessage">
+				{{ isLoading ? '发送中...' : '发送' }}
+			</button>
 		</view>
-		<navigator url="/pages/index2/index2">跳转到index2页面</navigator>
 	</view>
 </template>
 
@@ -22,108 +39,190 @@
 	export default {
 		data() {
 			return {
-				height: 400,
-				messages: [],//两个角色  消息展示列表 展示到页面上
-				userMessage: ""
+				messages: [], // 聊天记录
+				inputText: '', // 输入内容
+				isLoading: false, // 加载状态
+				scrollTop: 0, // 滚动位置
 			}
 		},
-		onLoad() {
-
-		},
 		methods: {
-			sendMessage() {
-				if(this.userMessage.trim() ===""){
-					uni.showToast({
-						icon:'none',
-						title: '请输入你的问题，不为空'
-					});
-					return;
-				}
-				//发请求之前
-				// 把用户提问的问题添加到消息列表中 即messages: []  要展示到页面上
-				this.messages.push({text:`用户提问:${this.userMessage}`,type:'user',isAI:false})
-				// 赋值
-				const message = this.userMessage;
-				// 清空输入框中的消息
-				this.userMessage = ""
-				// 发起网络请求
-				uni.request({
-					url: 'http://159.75.174.133:8080/ai/chat',
-					method: 'GET',
-					data: {
-						message:message
-					},
-					success: res => {
-						if(res.data.code === 200){
-							this.messages.push({text:`ai响应:${res.data.data}`,type:'ai',isAI:true})
-						}else{
-							this.messages.push({text:"网络错误，请稍后再试",type:'ai',isAI:true})
-						}
-					},
-					fail: () => {
-						this.messages.push({text:"网络错误，请稍后再试",type:'ai',isAI:true})
-					},
-					complete: () => {}
-				});
-				
+			// 发送消息
+			async sendMessage() {
+				if (!this.inputText.trim() || this.isLoading) return
 
+				const userMessage = this.inputText
+				this.inputText = ''
+
+				// 添加用户消息
+				this.addMessage({
+					role: 'user',
+					content: userMessage
+				})
+
+				// 添加AI消息占位
+				const aiMessage = this.addMessage({
+					role: 'assistant',
+					content: '',
+					loading: true
+				})
+
+				this.isLoading = true
+					
+				uni.request({
+					url: 'http://159.75.174.133:8080/ai/ask', // 请求地址（必须）
+					method: 'POST', // 请求方法，默认 GET
+					data: this.messages,
+					success: (res) => {	
+						const lastMsg = this.messages[this.messages.length-1]
+						lastMsg.content = res.data.data
+						lastMsg.loading = false
+					},
+					fail: (err) => {
+					  uni.showToast({
+						  title:"网络错误"
+					  })
+					},
+					complete: () => {
+						this.isLoading = false
+						this.forceUpdateScroll()
+					}
+				});
+					
+			},
+
+			// 添加消息
+			addMessage(message) {
+				this.messages.push({
+					...message,
+				})
+				this.forceUpdateScroll()
+				return this.messages[this.messages.length - 1]
+			},
+
+			// 强制更新视图并滚动到底部
+			forceUpdateScroll() {
+				this.$forceUpdate()
+				this.$nextTick(() => {
+					this.scrollToBottom()
+				})
+			},
+
+			// 滚动到底部
+			scrollToBottom() {
+				const query = uni.createSelectorQuery().in(this)
+				query.select('.chat-box').boundingClientRect()
+				query.selectAll('.msg-bubble').boundingClientRect()
+				query.exec(res => {
+					if (res[1] && res[1].length > 0) {
+						this.scrollTop = res[1][res[1].length - 1].bottom + 50
+					}
+				})
+			},
+
+			// 显示提示
+			showToast(title) {
+				uni.showToast({
+					title,
+					icon: 'none'
+				})
 			}
 		}
 	}
 </script>
 
-
-<style scoped>
+<style lang="scss">
 	.container {
-		padding: 2px;
+		height: 85vh;
+		display: flex;
+		flex-direction: column;
+		background: #f5f5f5;
+	}
+	.msg_assistant {
+		width: 100%;
+		display: flex;
+	}
+	
+	.msg_user {
+		width: 100%;
+		display: flex;
+		flex-direction: row-reverse;
 	}
 
 	.chat-box {
-		margin-bottom: 30px;
+		flex: 1;
+		width: 100%;
+		padding: 20rpx;
+		overflow: auto;
+		 box-sizing: border-box; 
 	}
 
-	.messages {
-		background-color: #f1f1f1;
-		padding: 5px;
-		border-radius: 10px;
-	}
+	.msg-bubble {
+		max-width: 70%;
+		padding: 20rpx;
+		margin-top: 20rpx;
+		margin-bottom: 20rpx;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+		line-height: 1.5;
 
-	.message {
-		margin-bottom: 20px;
-	}
+		&.left {
+			background: #fff;
+			border: 1rpx solid #eee;
+		}
 
-	.user-message {
-		background-color: #e0f7fa;
-		/* 用户消息的背景色 */
-		border-radius: 8px;
-	}
-
-	.ai-message {
-		background-color: #f1f8e9;
-		/* AI 消息的背景色 */
-		border-radius: 8px;
-		font-weight: bold;
-		/* 加粗AI的回答 */
+		&.right {
+			flex-direction: row-reverse;
+			background: #4CAF50;
+			color: white;
+		}
 	}
 
 	.input-box {
 		display: flex;
-		justify-content: space-between;
+		padding: 20rpx;
+		background: #fff;
+		border-top: 1rpx solid #eee;
+
+		.input {
+			flex: 1;
+			padding: 15rpx;
+			border: 1rpx solid #ddd;
+			border-radius: 8rpx;
+			margin-right: 20rpx;
+		}
+
+		.send-btn {
+			background: #4CAF50;
+			color: white;
+			padding: 0 30rpx;
+
+			&.disabled {
+				background: #ccc;
+			}
+		}
 	}
 
-	.input {
-		flex: 1;
-		padding: 10px;
-		border-radius: 8px;
-		border: 1px solid #ccc;
+	.loading .dot {
+		animation: blink 1.4s infinite;
+
+		&:nth-child(2) {
+			animation-delay: 0.2s;
+		}
+
+		&:nth-child(3) {
+			animation-delay: 0.4s;
+		}
 	}
 
-	.send-button {
-		margin-left: 10px;
-		background-color: #007aff;
-		color: white;
-		height: auto;
+	@keyframes blink {
 
-		border-radius: 8px;
+		0%,
+		100% {
+			opacity: 0.2
+		}
+
+		50% {
+			opacity: 1
+		}
 	}
 </style>
